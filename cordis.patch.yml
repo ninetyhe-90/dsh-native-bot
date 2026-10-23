@@ -2,9 +2,9 @@
 #
 # 临时启用（在项目目录）：
 #   npm start
-#   等价于 dsh web --patch /Users/ninetyhehe/WebstormProjects/dsh-native-bot/cordis.patch.yml
+#   等价于 dsh web --patch "$PWD/cordis.patch.yml"（name 必须是绝对路径，按需替换占位符）
 #
 # 永久启用：把下面这段追加到 $DSH_HOME/profiles/<profile>/cordis.patch.yml，之后 dsh web 就会带上桌宠。
 - insert:
     - id: desk-pet
-      name: /Users/ninetyhehe/WebstormProjects/dsh-native-bot/plugin/desk-pet.mjs
+      name: /absolute/path/to/dsh-native-bot/plugin/desk-pet.mjs

@@ -82,7 +82,7 @@ async function createWindow() {
         pushState({ name: STATES.TALKING, label: '', text: '气泡在这里显示它说的话，用来检查排版、换行和高度上限。', at: Date.now() })
       }
       if (forced === 'working') {
-        pushState({ name: STATES.WORKING, label: 'ls -la /Users/ninetyhehe', text: '', at: Date.now() })
+        pushState({ name: STATES.WORKING, label: 'ls -la ~/project', text: '', at: Date.now() })
       }
       if (forced === 'thinking') {
         pushState({ name: STATES.THINKING, label: '', text: '思考中…', at: Date.now() })
