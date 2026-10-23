@@ -1,0 +1,21 @@
+{
+  "name": "dsh-native-bot",
+  "version": "1.0.0",
+  "description": "Desktop pet assistant bound to a DeepSeek Harness runtime",
+  "private": true,
+  "type": "module",
+  "main": "src/main.mjs",
+  "scripts": {
+    "start": "node node_modules/@deepseek-ai/dsh/lib/bin.js web --patch cordis.patch.yml",
+    "check": "node --check src/main.mjs && node --check src/state.mjs && node --check src/rules.mjs && node --check src/stdio-kernel.mjs && node --check src/preload.cjs && node --check src/renderer/pet.js && node --check plugin/desk-pet.mjs",
+    "test": "npm run -s check && node --test test/*.test.mjs",
+    "test:e2e": "node test/electron.e2e.mjs"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh": "^0.2.1-rc.2",
+    "electron": "^45.0.0"
+  }
+}

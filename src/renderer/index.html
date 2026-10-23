@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;" />
+    <title>DSH 桌宠</title>
+    <link rel="stylesheet" href="pet.css" />
+  </head>
+  <body data-state="idle" data-skin="avatar">
+    <div class="stage">
+      <div class="bubble" id="bubble" hidden>
+        <div class="bubble-label" id="bubbleLabel"></div>
+        <div class="bubble-text" id="bubbleText"></div>
+      </div>
+
+      <div class="pet-wrap">
+        <img class="pet pet-avatar" src="avatar.png" alt="桌宠" draggable="false" />
+
+        <div class="fx fx-think" aria-hidden="true"><i></i><i></i><i></i></div>
+        <svg class="fx fx-work" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm8.2 4.6-1.7.3a6.6 6.6 0 0 1-.7 1.7l1 1.4-1.6 1.6-1.4-1a6.6 6.6 0 0 1-1.7.7l-.3 1.7h-2.2l-.3-1.7a6.6 6.6 0 0 1-1.7-.7l-1.4 1-1.6-1.6 1-1.4a6.6 6.6 0 0 1-.7-1.7l-1.7-.3v-2.2l1.7-.3c.15-.6.4-1.18.7-1.7l-1-1.4 1.6-1.6 1.4 1c.52-.3 1.1-.55 1.7-.7l.3-1.7h2.2l.3 1.7c.6.15 1.18.4 1.7.7l1.4-1 1.6 1.6-1 1.4c.3.52.55 1.1.7 1.7l1.7.3z" />
+        </svg>
+        <svg class="fx fx-sweat" viewBox="0 0 16 22" aria-hidden="true">
+          <path d="M8 1C6 6 2 9.5 2 14a6 6 0 0 0 12 0C14 9.5 10 6 8 1z" />
+        </svg>
+
+        <svg class="pet pet-whale" id="pet" viewBox="0 0 200 200" role="img" aria-label="鲸鱼桌宠">
+          <defs>
+            <linearGradient id="skin" gradientUnits="userSpaceOnUse" x1="72" y1="24" x2="146" y2="164">
+              <stop offset="0" stop-color="#c2ecff" />
+              <stop offset="0.4" stop-color="#5cc2f2" />
+              <stop offset="1" stop-color="#1c8ccf" />
+            </linearGradient>
+            <clipPath id="bodyClip">
+              <ellipse cx="106" cy="96" rx="64" ry="68" />
+            </clipPath>
+          </defs>
+
+          <g class="spout" stroke="#a5e2ff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M106 30 C105 14 95 3 85 9 C77 14 80 27 88 24" />
+            <path d="M106 30 C107 14 117 3 127 9 C135 14 132 27 124 24" />
+            <path d="M106 30 L106 4" />
+          </g>
+
+          <g class="tail">
+            <path d="M64 134 C50 129 31 127 18 133 C29 137 35 145 33 153 C46 149 57 143 66 137 Z" fill="url(#skin)" />
+            <path d="M62 142 C50 146 41 156 41 164 C52 160 60 154 66 148 Z" fill="#1c8ccf" opacity="0.9" />
+          </g>
+
+          <g class="fin">
+            <path d="M149 111 C168 103 182 110 180 124 C176 138 157 143 145 133 Z" fill="#2c99d9" />
+          </g>
+
+          <g class="body">
+            <g clip-path="url(#bodyClip)">
+              <ellipse cx="106" cy="96" rx="64" ry="68" fill="url(#skin)" />
+              <ellipse cx="153" cy="146" rx="60" ry="50" fill="#eaf7ff" />
+            </g>
+
+            <ellipse class="blush" cx="113" cy="105" rx="14" ry="10" fill="#b48cff" opacity="0.45" />
+
+            <g class="eyes">
+              <circle cx="137" cy="77" r="9.2" fill="#0e2f3c" />
+              <circle cx="139.8" cy="73.4" r="3.3" fill="#ffffff" />
+            </g>
+
+            <g class="mouth">
+              <path d="M125 108 q11 8 20 2" stroke="#0e2f3c" stroke-width="2.6" fill="none" stroke-linecap="round" />
+            </g>
+          </g>
+        </svg>
+
+        <button class="icon-btn talk" id="talkBtn" title="跟它说话" aria-label="跟它说话">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4 5.5h12v8H9l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <button class="icon-btn close" id="closeBtn" title="关闭桌宠（在 DSH 输入 /pet 重新打开）" aria-label="关闭桌宠">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <form class="composer" id="composer" hidden>
+        <textarea id="input" rows="3" autocomplete="off" spellcheck="false" placeholder="说点什么…"></textarea>
+        <div class="composer-bar">
+          <span class="composer-hint">Enter 发送 · Shift+Enter 换行</span>
+          <button type="submit" id="sendBtn">发送</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="pet.js"></script>
+  </body>
+</html>

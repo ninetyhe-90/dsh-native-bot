@@ -1,0 +1,597 @@
+:root {
+  --ink: #0d2b3a;
+  --bubble-bg: rgba(255, 255, 255, 0.96);
+  --bubble-border: rgba(13, 43, 58, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  user-select: none;
+  cursor: default;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  gap: 10px;
+}
+
+/* 气泡 */
+.bubble {
+  width: 100%;
+  max-height: 132px;
+  overflow-y: auto;
+  background: var(--bubble-bg);
+  border: 1px solid var(--bubble-border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 22px rgba(13, 43, 58, 0.14);
+  animation: bubble-in 160ms ease-out;
+  -webkit-app-region: no-drag;
+}
+
+.bubble[hidden] {
+  display: none;
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bubble-label {
+  font-size: 11px;
+  color: #5c7d8d;
+  margin-bottom: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bubble-label:empty {
+  display: none;
+}
+
+.bubble-text {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 宠物 */
+.pet-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  flex: none;
+  -webkit-app-region: drag;
+}
+
+.pet {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  transform-origin: 50% 80%;
+}
+
+.body {
+  transform-origin: 106px 96px;
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+.tail {
+  transform-origin: 66px 136px;
+  animation: tail-sway 3s ease-in-out infinite;
+}
+
+.fin {
+  transform-origin: 148px 116px;
+  animation: fin-wave 3s ease-in-out infinite;
+}
+
+.eyes {
+  transform-origin: 137px 77px;
+  animation: blink 5.4s infinite;
+}
+
+.mouth {
+  transform-origin: 135px 108px;
+}
+
+.spout {
+  transform-origin: 106px 34px;
+  animation: spout-rise 3.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.018);
+  }
+}
+
+@keyframes tail-sway {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes fin-wave {
+  0%,
+  100% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  95.5% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes spout-rise {
+  0%,
+  100% {
+    transform: translateY(2px) scale(0.94);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-3px) scale(1.06);
+    opacity: 1;
+  }
+}
+
+/* 思考：整体上浮，尾巴加快 */
+body[data-state="thinking"] .pet {
+  animation: hover 1.4s ease-in-out infinite;
+}
+
+body[data-state="thinking"] .tail {
+  animation: tail-fast 0.9s ease-in-out infinite;
+}
+
+body[data-state="thinking"] .spout {
+  animation: spout-burst 1.1s ease-out infinite;
+}
+
+@keyframes hover {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes tail-fast {
+  0%,
+  100% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes spout-burst {
+  0% {
+    transform: translateY(6px) scale(0.8);
+    opacity: 0;
+  }
+  40% {
+    transform: translateY(-4px) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10px) scale(1.16);
+    opacity: 0;
+  }
+}
+
+/* 干活：左右摆动 */
+body[data-state="working"] .pet {
+  animation: hustle 0.62s ease-in-out infinite;
+}
+
+body[data-state="working"] .tail {
+  animation: tail-fast 0.4s ease-in-out infinite;
+}
+
+body[data-state="working"] .fin {
+  animation: fin-wave 0.5s ease-in-out infinite;
+}
+
+@keyframes hustle {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-2px);
+  }
+}
+
+/* 说话：嘴张合 */
+body[data-state="talking"] .mouth {
+  animation: talk 0.32s ease-in-out infinite;
+}
+
+@keyframes talk {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(2.2) translateY(-1px);
+  }
+}
+
+/* 出错：抖动 + 变色 */
+body[data-state="error"] .pet {
+  animation: shake 0.4s ease-in-out 3;
+}
+
+body[data-state="error"] .body ellipse {
+  filter: hue-rotate(-24deg) saturate(0.75);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+/* 皮肤切换：body[data-skin] 决定显示哪一套形象 */
+body[data-skin="avatar"] .pet-whale,
+body[data-skin="whale"] .pet-avatar,
+body[data-skin="whale"] .fx {
+  display: none;
+}
+
+/*
+ * 头像皮肤：一整张位图，只能整体动。
+ * 旋转支点放在下巴附近，摆动起来像在点头、歪头，而不是整张图在转。
+ */
+.pet-avatar {
+  position: absolute;
+  left: 10px;
+  bottom: 16px;
+  width: 180px;
+  height: auto;
+  pointer-events: none;
+  transform-origin: 50% 92%;
+  animation: avatar-idle 3.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes avatar-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.6deg) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1.6deg) scale(1.015);
+  }
+}
+
+body[data-skin="avatar"][data-state="thinking"] .pet-avatar {
+  animation: avatar-think 2.2s ease-in-out infinite;
+}
+
+@keyframes avatar-think {
+  0%,
+  100% {
+    transform: translateY(-2px) rotate(-7deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+}
+
+body[data-skin="avatar"][data-state="working"] .pet-avatar {
+  animation: avatar-work 0.52s ease-in-out infinite;
+}
+
+@keyframes avatar-work {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(3deg);
+  }
+}
+
+body[data-skin="avatar"][data-state="talking"] .pet-avatar {
+  animation: avatar-talk 0.38s ease-in-out infinite;
+}
+
+@keyframes avatar-talk {
+  0%,
+  100% {
+    transform: translateY(0) scale(1.03, 0.97);
+  }
+  50% {
+    transform: translateY(-5px) scale(0.98, 1.03);
+  }
+}
+
+body[data-skin="avatar"][data-state="error"] .pet-avatar {
+  animation: avatar-shake 0.4s ease-in-out 3;
+  filter: grayscale(0.35) brightness(0.96);
+}
+
+@keyframes avatar-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-2deg);
+  }
+  75% {
+    transform: translateX(5px) rotate(2deg);
+  }
+}
+
+/* 头顶特效：只在对应状态出现 */
+.fx {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+body[data-skin="avatar"][data-state="thinking"] .fx-think,
+body[data-skin="avatar"][data-state="working"] .fx-work,
+body[data-skin="avatar"][data-state="error"] .fx-sweat {
+  display: flex;
+}
+
+.fx-think {
+  top: 4px;
+  right: 8px;
+  gap: 4px;
+  padding: 5px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--bubble-border);
+  box-shadow: 0 3px 10px rgba(13, 43, 58, 0.12);
+}
+
+.fx-think i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3f63c9;
+  animation: think-dot 1.2s ease-in-out infinite;
+}
+
+.fx-think i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.fx-think i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes think-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.fx-work {
+  top: 2px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  fill: #3f63c9;
+  filter: drop-shadow(0 2px 3px rgba(13, 43, 58, 0.2));
+  animation: gear-spin 1.6s linear infinite;
+}
+
+@keyframes gear-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fx-sweat {
+  top: 38px;
+  right: 34px;
+  width: 14px;
+  height: 19px;
+  fill: #8fd3ff;
+  stroke: #3f8fd0;
+  stroke-width: 1.2;
+  animation: sweat-drop 1.4s ease-in infinite;
+}
+
+@keyframes sweat-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-avatar,
+  .fx,
+  .fx-think i {
+    animation: none !important;
+  }
+}
+
+/* 按钮 */
+.icon-btn {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 43, 58, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: #2c5a72;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.08);
+  background: #ffffff;
+}
+
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.talk {
+  left: 2px;
+  bottom: 4px;
+}
+
+.close {
+  right: 2px;
+  bottom: 4px;
+}
+
+/* 输入区：展开时窗口向上长高，这里是多行文本框加一条操作栏 */
+.composer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid var(--bubble-border);
+  box-shadow: 0 6px 22px rgba(13, 43, 58, 0.16);
+  animation: bubble-in 160ms ease-out;
+  -webkit-app-region: no-drag;
+}
+
+.composer[hidden] {
+  display: none;
+}
+
+.composer:focus-within {
+  border-color: #4fa9d4;
+}
+
+.composer textarea {
+  width: 100%;
+  min-height: 66px;
+  max-height: 132px;
+  resize: none;
+  border: none;
+  background: transparent;
+  padding: 2px 2px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  outline: none;
+  user-select: text;
+  overflow-y: auto;
+}
+
+.composer textarea::placeholder {
+  color: #8aa3b0;
+}
+
+.composer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.composer-hint {
+  font-size: 10px;
+  color: #8aa3b0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.composer button {
+  flex: none;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 9px;
+  border: none;
+  background: #39a6de;
+  color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.composer button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
